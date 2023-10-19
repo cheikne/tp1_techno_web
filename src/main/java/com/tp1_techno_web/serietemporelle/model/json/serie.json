@@ -1,0 +1,19 @@
+{
+  "date": {
+    "titre": "",
+    "description": "",
+    "valeur": [
+      {
+        "temperature_ext": "",
+        "distance_parc": "",
+        "poids": "",
+        "etiquettes": [
+          {
+            "label": "",
+            "commentaire":""
+          }
+        ]
+      }
+      ]
+  }
+}
