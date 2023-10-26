@@ -1,15 +1,15 @@
 package com.tp1_techno_web.serietemporelle.model;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "testFirst")
+//@Entity
+//@Table(name = "testFirst")
 public class Serie {
 
 
-    @Id
+//    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String date;
