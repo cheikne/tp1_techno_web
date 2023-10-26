@@ -1,9 +1,14 @@
 package com.tp1_techno_web.serietemporelle.model;
 
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
+
 import java.util.Date;
 
+//@Table
 public class Event {
 
+//    @Id
     private long id;
     private Date date;
 
@@ -19,6 +24,7 @@ public class Event {
         this.tag = tag;
         this.commentaire = commentaire;
     }
+    public Event(){}
 
     public long getId() {
         return id;

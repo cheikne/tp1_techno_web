@@ -10,15 +10,17 @@ import java.util.List;
 @Service
 public class SerieEventService {
 
-    @Autowired
-    private SerieEventRepository repository;
+//    @Autowired
+//    private SerieEventRepository repository;
 
-    public List<Serie> getAllSeries(){
-        return repository.findAll();
-    }
+//    public List<Serie> getAllSeries(){
+//        return repository.findAll();
+//    }
+//
+//    public List<Serie> createSerie(Serie serie) {
+//        this.repository.save(serie);
+//        return repository.findAll();
+//    }
 
-    public List<Serie> createSerie(Serie serie) {
-        this.repository.save(serie);
-        return repository.findAll();
-    }
+
 }
