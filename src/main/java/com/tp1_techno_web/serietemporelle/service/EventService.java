@@ -29,4 +29,22 @@ public class EventService {
         }
         return event_searched;
     }
+
+    public List<Event> createEvents(Event event) {
+        this.events.add(event);
+        return this.events;
+    }
+
+    public List<Event> updateEvent(Event event_u, long id) {
+        int i = 0;
+        for (Event event:events){
+            if (event.getId() == id){
+               events.remove(event);
+               events.add(event_u);
+               break;
+            }
+            i += 1;
+        }
+        return  this.events;
+    }
 }
