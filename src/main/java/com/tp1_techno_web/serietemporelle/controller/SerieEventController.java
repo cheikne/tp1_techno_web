@@ -1,13 +1,6 @@
 package com.tp1_techno_web.serietemporelle.controller;
 
-import com.tp1_techno_web.serietemporelle.model.Serie;
-import com.tp1_techno_web.serietemporelle.repository.SerieEventRepository;
-import com.tp1_techno_web.serietemporelle.service.SerieEventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")

@@ -1,11 +1,11 @@
 package com.tp1_techno_web.serietemporelle.service;
 
 import com.tp1_techno_web.serietemporelle.model.Event;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EventService {
@@ -18,7 +18,18 @@ public class EventService {
             new Event(5,new Date(),5,4,"Test commentaire 5")
     ));
 
-    public List<Event> getAllEvent(){ return this.events;}
+    public Object getAllEvent(HttpServletRequest header){
+        String headerAccept = header.getHeader("Accept");
+        if(headerAccept.contains(MediaType.APPLICATION_JSON_VALUE)) {
+            System.out.println("Header json detected ****************************");
+            return this.events;
+        }
+        if(headerAccept.contains(MediaType.TEXT_HTML_VALUE)) {
+            System.out.println("Header Text html detected ****************************");
+            return GenerateResponses.generateHtmlForEvents(events);
+        }
+        return this.events;
+    }
     public Event getEventById(long id){
         var event_searched = new Event();
         for (Event event:events){
@@ -46,5 +57,19 @@ public class EventService {
             i += 1;
         }
         return  this.events;
+    }
+
+    public Map<String,String> deleteEvent(long id) {
+        for (Event event:events){
+            if (event.getId() == id){
+                events.remove(event);
+                break;
+            };
+        }
+
+        Map<String, String> properties = new HashMap<>();
+        properties.put("message", "Succès");
+
+        return properties;
     }
 }
