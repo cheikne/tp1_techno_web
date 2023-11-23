@@ -3,13 +3,13 @@ package com.tp1_techno_web.serietemporelle.model;
 public class TimeSeries {
     private long id;
     private long user_id;
-    private String tittle;
+    private String title;
     private String description;
 
-    public TimeSeries(long id, long user_id, String tittle, String description) {
+    public TimeSeries(long id, long user_id, String title, String description) {
         this.id = id;
         this.user_id = user_id;
-        this.tittle = tittle;
+        this.title = title;
         this.description = description;
     }
 
@@ -21,8 +21,8 @@ public class TimeSeries {
         return user_id;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
@@ -37,8 +37,8 @@ public class TimeSeries {
         this.user_id = user_id;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String tittle) {
+        this.title = tittle;
     }
 
     public void setDescription(String description) {
