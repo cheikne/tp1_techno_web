@@ -2,7 +2,7 @@
 title 'Diagramme de classes'
 
 package model #DDFFDD {
-  class Evenement {
+  class Event {
   + id : long
   + date : Date
   + valeur: double
@@ -11,29 +11,31 @@ package model #DDFFDD {
 
   }
 
-  class SerieTemporelle {
+  class TimeSerie {
   + serieId: Uuid
-  + listEvenements: Arraylist
+  + listEvents: Arraylist
   + titre: String
   + description: String
   + owner: Uuid
   + readers: Arraylist<Uuid>
   + editors: Arraylist<Uuid>
   --
-  + void addEvent(Evenement event)
-  + void updateEvent(Evenement event)
-  + void deleteEvent(Evenement event)
+  + void addEvent(Event event)
+  + void updateEvent(Event event)
+  + void deleteEvent(Event event)
   }
 
-  class Utilisateur {
+  class User {
   + userId: Uuid
   + Name: String
   --
-  + SerieTemporelle createSerie()
-  + SerieTemporelle deleteSerie(Uuid serieId)
-  + void addEventToSerie(Evenement event, SerieTemporelle serie)
-  + void deleteEventFromSerie(Evenement event, SerieTemporelle serie)
-  + void updateEventFromSerie(Evenement event, SerieTemporelle serie)
+  + TimeSerie createSerie()
+  + TimeSerie deleteSerie(Uuid serieId)
+  + void updateSerieTitle(long serieId, String newTitle)
+  + void updateSerieDescription(long serieId, String newDescription)
+  + void addEventToSerie(Event event, TimeSerie serie)
+  + void deleteEventFromSerie(Event event, TimeSerie serie)
+  + void updateEventFromSerie(Event event, TimeSerie serie)
   + void addEditor(Uuid userId)
   + void addReader(Uuid userId)
   + void deleteEditor(Uuid userId)
@@ -45,7 +47,53 @@ package model #DDFFDD {
   }
 }
 
-SerieTemporelle -right- "*" Evenement
-Utilisateur -up-> SerieTemporelle : instanciate
-Evenement -- "*" Tag
+package service #DD0623 {
+  class EventService {
+  + id : long
+  + date : Date
+  + valeur: double
+  + commentaire: String
+  --
+
+  }
+
+  class TimeSerieService {
+  + serieId: Uuid
+  + listEvents: Arraylist
+  + titre: String
+  + description: String
+  + owner: Uuid
+  + readers: Arraylist<Uuid>
+  + editors: Arraylist<Uuid>
+  --
+  + void addEvent(Event event)
+  + void updateEvent(Event event)
+  + void deleteEvent(Event event)
+  }
+
+  class UserService {
+  + userId: Uuid
+  + Name: String
+  --
+  + TimeSerie createSerie()
+  + TimeSerie deleteSerie(Uuid serieId)
+  + void updateSerieTitle(long serieId, String newTitle)
+  + void updateSerieDescription(long serieId, String newDescription)
+  + void addEventToSerie(Event event, TimeSerie serie)
+  + void deleteEventFromSerie(Event event, TimeSerie serie)
+  + void updateEventFromSerie(Event event, TimeSerie serie)
+  + void addEditor(Uuid userId)
+  + void addReader(Uuid userId)
+  + void deleteEditor(Uuid userId)
+  + void deleteReader(Uuid userId)
+  }
+
+  class TagService {
+  + name: String
+  }
+}
+
+TimeSerie -right- "*" Event
+User -up-> TimeSerie : instanciate
+Event -- "*" Tag
 @enduml
