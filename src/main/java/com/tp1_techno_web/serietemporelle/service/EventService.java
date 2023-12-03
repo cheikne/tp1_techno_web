@@ -60,9 +60,9 @@ public class EventService {
     }
 
     public Map<String,String> deleteEvent(long id) {
-        for (Event event:events){
+        for (Event event:this.events){
             if (event.getId() == id){
-                events.remove(event);
+                this.events.remove(event);
                 break;
             };
         }
@@ -71,5 +71,25 @@ public class EventService {
         properties.put("message", "Succès");
 
         return properties;
+    }
+
+    public ArrayList<Event> findAllEvent(){return  this.events;}
+
+    public  Event findEventById(long id){
+        for (Event event:this.events){
+            if (event.getId() == id){
+                return  event;
+            };
+        }
+        return  null;
+    }
+
+    public  Event findEventValue(int value){
+        for (Event event:this.events){
+            if (event.getValeur() == value){
+                return  event;
+            }
+        }
+        return  null;
     }
 }

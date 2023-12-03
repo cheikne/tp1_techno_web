@@ -2,6 +2,7 @@ package com.tp1_techno_web.serietemporelle.service;
 
 import com.tp1_techno_web.serietemporelle.model.Event;
 import com.tp1_techno_web.serietemporelle.model.TimeSeries;
+import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 

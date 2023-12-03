@@ -5,6 +5,8 @@ import com.tp1_techno_web.serietemporelle.service.TimeSerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class TimeSerieController {
 
@@ -27,6 +29,13 @@ public class TimeSerieController {
     @ResponseBody
     public  Object update(@RequestBody TimeSeries timeSeries, @PathVariable long id){
         return timeSerieServices.updateToTimeSerie(timeSeries,id);
+    }
+
+    @PostMapping("api/add_event_to_serie")
+    @ResponseBody
+    public Object addEventToSerie(@RequestBody Map<String,String> add_event_timeSerie){
+
+        return this.timeSerieServices.addEventToSerie(add_event_timeSerie);
     }
 
 }
