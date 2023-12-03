@@ -1,5 +1,51 @@
 @startuml
-title 'Diagramme de classe'
+title 'Diagramme de classes'
 
-class enregistrements
+package model #DDFFDD {
+  class Evenement {
+  + id : long
+  + date : Date
+  + valeur: double
+  + commentaire: String
+  --
+
+  }
+
+  class SerieTemporelle {
+  + serieId: Uuid
+  + listEvenements: Arraylist
+  + titre: String
+  + description: String
+  + owner: Uuid
+  + readers: Arraylist<Uuid>
+  + editors: Arraylist<Uuid>
+  --
+  + void addEvent(Evenement event)
+  + void updateEvent(Evenement event)
+  + void deleteEvent(Evenement event)
+  }
+
+  class Utilisateur {
+  + userId: Uuid
+  + Name: String
+  --
+  + SerieTemporelle createSerie()
+  + SerieTemporelle deleteSerie(Uuid serieId)
+  + void addEventToSerie(Evenement event, SerieTemporelle serie)
+  + void deleteEventFromSerie(Evenement event, SerieTemporelle serie)
+  + void updateEventFromSerie(Evenement event, SerieTemporelle serie)
+  + void addEditor(Uuid userId)
+  + void addReader(Uuid userId)
+  + void deleteEditor(Uuid userId)
+  + void deleteReader(Uuid userId)
+  }
+
+  class Tag {
+  + name: String
+  }
+}
+
+SerieTemporelle -right- "*" Evenement
+Utilisateur -up-> SerieTemporelle : instanciate
+Evenement -- "*" Tag
 @enduml
