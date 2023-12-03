@@ -1,16 +1,23 @@
 package com.tp1_techno_web.serietemporelle.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TimeSeries {
     private long id;
     private long user_id;
-    private String tittle;
+    private String title;
     private String description;
 
-    public TimeSeries(long id, long user_id, String tittle, String description) {
+    private ArrayList<Event> events;
+
+
+    public TimeSeries(long id, long user_id, String title, String description,ArrayList<Event> events) {
         this.id = id;
         this.user_id = user_id;
-        this.tittle = tittle;
+        this.title = title;
         this.description = description;
+        this.events = new ArrayList<>();
     }
 
     public long getId() {
@@ -21,14 +28,17 @@ public class TimeSeries {
         return user_id;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public List<Event> getEvents() {
+        return this.events;
+    }
     public void setId(long id) {
         this.id = id;
     }
@@ -37,11 +47,15 @@ public class TimeSeries {
         this.user_id = user_id;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String tittle) {
+        this.title = tittle;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setEvents(Event event) {
+        this.events.add(event);
     }
 }
