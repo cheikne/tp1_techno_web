@@ -14,7 +14,7 @@ public class Event {
     private Date date;
 
     private double value;
-    private ArrayList<Tag> tags;
+    private ArrayList<Tag> tags = new ArrayList<Tag>();
     private String comment;
     private Date createdAt;
     private Date updatedAt;
@@ -34,6 +34,12 @@ public class Event {
         this.comment = comment;
     }
 
+    public Event() {
+        this.date = new Date();
+        this.comment = "";
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
 
     public long getId() {
         return id;

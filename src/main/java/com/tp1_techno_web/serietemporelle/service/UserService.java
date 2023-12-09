@@ -20,9 +20,7 @@ public class UserService {
     }
 
     public  boolean isExistUser(String username){
-        User user = new User(1,username);
-        if(usersService.contains(user))
-            return  true;
-        return false;
+        User user = new User(username);
+        return usersService.contains(user);
     }
 }

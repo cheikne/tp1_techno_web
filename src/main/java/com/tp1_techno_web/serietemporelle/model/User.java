@@ -3,14 +3,19 @@ package com.tp1_techno_web.serietemporelle.model;
 import com.tp1_techno_web.serietemporelle.service.IdGenerator;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class User {
 
     private long id;
     private String username;
 
+    private final Pattern ALLOWED_USER = Pattern.compile("^[a-zA-Z ]{1,40}$");
 
-    public User(long id, String username) {
+    public User(String username) {
+        if (username == null) throw new IllegalArgumentException();
+        if (!ALLOWED_USER.matcher(username).matches()) throw new IllegalArgumentException();
+        if (username.isBlank()) throw new IllegalArgumentException();
         this.id = IdGenerator.nextId();
         this.username = username;
     }
