@@ -11,7 +11,7 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    private   ArrayList<User> usersService = new ArrayList<>();
+    private ArrayList<User> usersService = new ArrayList<>();
     public Object createUser(User user) {
         this.usersService.add(user);
         Map<String,String> status = new HashMap<>();
@@ -19,10 +19,9 @@ public class UserService {
         return status;
     }
 
-    public  boolean isExistUser(String username){
+    public boolean isExistUser(String username){
+        if (username.isBlank()) return false;
         User user = new User(1,username);
-        if(usersService.contains(user))
-            return  true;
-        return false;
+        return usersService.contains(user);
     }
 }

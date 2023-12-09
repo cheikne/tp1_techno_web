@@ -72,7 +72,7 @@ public class TimeSeries {
         this.description = description;
     }
 
-    public void setEvents(Event event) {
+    public void addEvents(Event event) {
         this.events.add(event);
     }
 

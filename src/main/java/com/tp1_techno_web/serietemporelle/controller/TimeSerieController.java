@@ -1,5 +1,6 @@
 package com.tp1_techno_web.serietemporelle.controller;
 
+import com.tp1_techno_web.serietemporelle.model.Event;
 import com.tp1_techno_web.serietemporelle.model.TimeSeries;
 import com.tp1_techno_web.serietemporelle.service.TimeSerieService;
 import com.tp1_techno_web.serietemporelle.service.UserService;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,11 +38,11 @@ public class TimeSerieController {
         return timeSerieServices.updateToTimeSerie(timeSeries,headers,id);
     }
 
-    @PostMapping("api/add_event_to_serie")
+    @PostMapping("api/add_event/{id}")
     @ResponseBody
-    public Object addEventToSerie(@RequestBody Map<String,String> add_event_timeSerie){
+    public Object addEventToSerie(@RequestBody ArrayList<Event> allEvents,@PathVariable long id,HttpServletRequest headers){
 
-        return this.timeSerieServices.addEventToSerie(add_event_timeSerie);
+        return this.timeSerieServices.addEventToSerie(allEvents,id,headers);
     }
 
 }

@@ -38,7 +38,7 @@ public class User {
 
         User user = (User) o;
 
-        return username.equals(user.username);
+        return username.equalsIgnoreCase(user.username);
     }
 
     @Override
