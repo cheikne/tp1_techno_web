@@ -24,6 +24,13 @@ public class Event {
         this.tag = tag;
         this.commentaire = commentaire;
     }
+    public Event(long id, Date date, int valeur) {
+        this.id = id;
+        this.date = date;
+        this.valeur = valeur;
+        this.tag = tag;
+        this.commentaire = commentaire;
+    }
     public Event(){}
 
     public long getId() {

@@ -1,31 +1,38 @@
 package com.tp1_techno_web.serietemporelle.model;
 
+import com.tp1_techno_web.serietemporelle.service.IdGenerator;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TimeSeries {
     private long id;
-    private long user_id;
+    private String owner;
     private String title;
     private String description;
 
     private ArrayList<Event> events;
+    private Date createdAt;
+    private Date updatedAt;
 
 
-    public TimeSeries(long id, long user_id, String title, String description,ArrayList<Event> events) {
-        this.id = id;
-        this.user_id = user_id;
+
+    public TimeSeries(String title, String description, ArrayList<Event> events) {
+        this.id = IdGenerator.nextId();
         this.title = title;
         this.description = description;
         this.events = new ArrayList<>();
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
 
     public long getId() {
         return id;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public String getOwner() {
+        return owner;
     }
 
     public String getTitle() {
@@ -42,9 +49,16 @@ public class TimeSeries {
     public void setId(long id) {
         this.id = id;
     }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public void setTitle(String tittle) {
@@ -57,5 +71,13 @@ public class TimeSeries {
 
     public void setEvents(Event event) {
         this.events.add(event);
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

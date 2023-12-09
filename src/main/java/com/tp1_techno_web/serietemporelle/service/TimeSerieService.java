@@ -1,12 +1,14 @@
 package com.tp1_techno_web.serietemporelle.service;
 
 import com.tp1_techno_web.serietemporelle.model.TimeSeries;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -14,12 +16,19 @@ public class TimeSerieService {
     private ArrayList<TimeSeries> timeSerieService = new ArrayList<>();
     @Autowired
     private EventService event;
-    public Object getAllTimeSeries(String header) {
-        if(header.contains(MediaType.APPLICATION_JSON_VALUE)) {
+    @Autowired
+    private UserService usersService;
+    public Object getAllTimeSeries(HttpServletRequest headers) {
+        String accept = headers.getHeader("Accept");
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist.");
+        System.out.println("Header username **************************** "+accept);
+        if(accept.contains(MediaType.APPLICATION_JSON_VALUE)) {
             System.out.println("Header json detected ****************************");
             return this.timeSerieService;
         }
-        if(header.contains(MediaType.TEXT_HTML_VALUE)) {
+        if(accept.contains(MediaType.TEXT_HTML_VALUE)) {
             System.out.println("Header Text html detected ****************************");
             return GenerateResponses.generateHtmlForTimeSeries(this.timeSerieService);
         }
@@ -27,19 +36,28 @@ public class TimeSerieService {
     }
 
 
-    public Object getTimeSeriesById(String header, long id) {
-
+    public Object getTimeSeriesById(HttpServletRequest headers, long id) {
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist.");
         return this.timeSerieService;
     }
 
 
-    public Object createTimeSerie(TimeSeries timeSeries) {
+    public Object createTimeSerie(TimeSeries timeSeries,HttpServletRequest headers) {
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist. You have to create first "+username);
+        timeSeries.setOwner(username);
         this.timeSerieService.add(timeSeries);
 
         return  this.timeSerieService;
     }
 
-    public Object updateToTimeSerie(TimeSeries timeSeries, long id) {
+    public Object updateToTimeSerie(TimeSeries timeSeries, HttpServletRequest headers,long id) {
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist."+username.toUpperCase()+"  can't edit");
         int i = 0;
         for (var timeS : this.timeSerieService){
             if(timeS.getId()==id) {
