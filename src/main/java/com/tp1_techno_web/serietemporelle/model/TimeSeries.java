@@ -19,7 +19,7 @@ public class TimeSeries {
 
 
 
-    public TimeSeries(String title, String description, Event...events) {
+    public TimeSeries(String title, String description, ArrayList<Event> events) {
         this.id = IdGenerator.nextId();
         this.title = title;
         this.description = description;
@@ -84,9 +84,9 @@ public class TimeSeries {
         this.updatedAt = updatedAt;
     }
 
-    private void addEventsToTimeSerie(Event ... events){
-        this.events = new ArrayList<>();
-        this.events.addAll(new ArrayList<Event>(Arrays.asList(events)));
+    private void addEventsToTimeSerie(ArrayList<Event> events){
+        this.events = new ArrayList<Event>();
+        events.forEach(obj->this.addEvents(obj));
     }
 
 }

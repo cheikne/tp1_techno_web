@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,6 +48,7 @@ public class TimeSerieService {
         if(!usersService.isExistUser(username))
             return messageError("User "+username+" does not exist. You have to create first "+username);
         timeSeries.setOwner(username);
+        System.out.println("****************************************");
         this.timeSerieService.add(timeSeries);
 
         return  this.getAllTimeSeriesForOwner(username);
@@ -110,13 +108,21 @@ public class TimeSerieService {
 
     private Object getAllTimeSeriesForOwner(String username){
         return this.timeSerieService.stream()
-                .filter(obj -> username.toUpperCase().equals(obj.getOwner().toUpperCase()))
+                .filter(obj -> username.equalsIgnoreCase(obj.getOwner()))
                 .collect(Collectors.toList());
     }
     private Object getOneTimeSeriesForOwner(String username,long id){
         return this.timeSerieService.stream()
-                .filter(obj -> username.toUpperCase().equals(obj.getOwner().toUpperCase()) && obj.getId()==id)
+                .filter(obj -> username.equalsIgnoreCase(obj.getOwner()) && obj.getId()==id)
                 .findFirst();
+    }
+
+    public TimeSeries findOneByIdSerie(long id){
+        Optional<TimeSeries> searchedSerie = this.timeSerieService.stream()
+                .filter(obj -> obj.getId()==id)
+                .findFirst();
+        TimeSeries myserie = searchedSerie.orElse(null);
+        return myserie;
     }
 }
 

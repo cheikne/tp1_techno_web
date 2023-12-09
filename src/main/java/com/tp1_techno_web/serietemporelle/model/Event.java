@@ -14,24 +14,29 @@ public class Event {
     private Date date;
 
     private double value;
-    private ArrayList<Tag> tags;
+    private ArrayList<Tag> tags = new ArrayList<Tag>();
     private String comment;
     private Date createdAt;
     private Date updatedAt;
 
-    public Event(Date date, double value) {
+
+    public Event(Date date, double value, String comment, Tag ... tags) {
         this.id = IdGenerator.nextId();
         if (date == null) throw new IllegalArgumentException();
         this.date = date;
         this.value = value;
         this.createdAt = new Date();
         this.updatedAt = new Date();
-    }
-
-    public Event(Date date, double value, String comment, Tag ... tags) {
-        this(date, value);
         this.tags = new ArrayList<Tag>(Arrays.asList(tags));
         this.comment = comment;
+    }
+
+    public Event() {
+        this.id = IdGenerator.nextId();
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+        this.comment = "";
+        this.value=0;
     }
 
 

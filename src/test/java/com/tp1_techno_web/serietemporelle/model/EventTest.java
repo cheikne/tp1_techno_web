@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class EventTest {
     @Test
     void canNotCreateEventWithoutDate() {
-        assertThatThrownBy(() -> new Event(null, 0))
+        assertThatThrownBy(() -> new Event(null, 0, ""))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
