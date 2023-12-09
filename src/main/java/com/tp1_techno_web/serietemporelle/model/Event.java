@@ -16,7 +16,6 @@ public class Event {
     private int tag;
     private String commentaire;
 
-
     public Event(long id, Date date, int valeur, int tag, String commentaire) {
         this.id = id;
         this.date = date;
