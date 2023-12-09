@@ -31,7 +31,7 @@ public class GenerateResponses {
     public static Object generateHtmlForTimeSerie(TimeSeries timeSeries) {
         return "<div>" +
                 "<p>"+"Id of event "+timeSeries.getId()+"</p>"+
-                "<p>"+"Value of event "+timeSeries.getUser_id()+"</p>"+
+                "<p>"+"Value of event "+timeSeries.getOwner()+"</p>"+
                 "<p>"+"Date of event"+timeSeries.getTitle()+"</p>"+
                 "<p>"+"Comment of event "+timeSeries.getDescription()+"</p>"+
                 "</div>";

@@ -3,68 +3,67 @@ title 'Diagramme de classes'
 
 package model #DDFFDD {
   class Event {
-  + id : long
+  + eventId : long
   + date : Date
-  + valeur: double
-  + commentaire: String
+  + value: double
+  + comment: String
+  + Arraylist<Tag> tags
+  + createdAt : Date
+  + updatedAt : Date
   --
 
   }
 
   class TimeSerie {
-  + serieId: Uuid
+  + serieId: long
   + listEvents: Arraylist
-  + titre: String
+  + title: String
   + description: String
-  + owner: Uuid
-  + readers: Arraylist<Uuid>
-  + editors: Arraylist<Uuid>
+  + owner: long
+  + createdAt : Date
+  + updatedAt : Date
   --
-  + void addEvent(Event event)
-  + void updateEvent(Event event)
-  + void deleteEvent(Event event)
   }
 
   class User {
-  + userId: Uuid
-  + Name: String
+  + userId: long
+  + username: String
   --
-  + TimeSerie createSerie()
-  + TimeSerie deleteSerie(Uuid serieId)
-  + void updateSerieTitle(long serieId, String newTitle)
-  + void updateSerieDescription(long serieId, String newDescription)
-  + void addEventToSerie(Event event, TimeSerie serie)
-  + void deleteEventFromSerie(Event event, TimeSerie serie)
-  + void updateEventFromSerie(Event event, TimeSerie serie)
-  + void addEditor(Uuid userId)
-  + void addReader(Uuid userId)
-  + void deleteEditor(Uuid userId)
-  + void deleteReader(Uuid userId)
   }
 
   class Tag {
   + name: String
   }
+
+  class SharedSerie {
+   + long sharedSerieId
+   + User grantedUser
+   + Right permission
+  }
+
+  enum Right {
+    OWNER
+    READER
+    EDITOR
+  }
 }
 
 package service #DD0623 {
   class EventService {
-  + id : long
-  + date : Date
-  + valeur: double
-  + commentaire: String
+  + Arraylist<Event> eventService
   --
-
+  - Object getAllEvent(HttpServletRequest header)
+  - Event getEventById(long eventId)
+  - List<Event> createEvents(Event event)
+  - List<Event> updateEvent(Event event_u, long eventId)
+  - Map<String,String> deleteEvent(long eventId)
+  - ArrayList<Event> findAllEvent()
+  - Event findEventById(long eventId)
+  - Event findEventValue(int value)
   }
 
   class TimeSerieService {
-  + serieId: Uuid
-  + listEvents: Arraylist
-  + titre: String
-  + description: String
-  + owner: Uuid
-  + readers: Arraylist<Uuid>
-  + editors: Arraylist<Uuid>
+  + Arraylist<TimeSerie> timeSerieService
   --
   + void addEvent(Event event)
   + void updateEvent(Event event)
@@ -72,28 +71,38 @@ package service #DD0623 {
   }
 
   class UserService {
-  + userId: Uuid
-  + Name: String
+  + userId: long
+  + name: String
   --
   + TimeSerie createSerie()
-  + TimeSerie deleteSerie(Uuid serieId)
+  + TimeSerie deleteSerie(long serieId)
   + void updateSerieTitle(long serieId, String newTitle)
   + void updateSerieDescription(long serieId, String newDescription)
   + void addEventToSerie(Event event, TimeSerie serie)
   + void deleteEventFromSerie(Event event, TimeSerie serie)
   + void updateEventFromSerie(Event event, TimeSerie serie)
-  + void addEditor(Uuid userId)
-  + void addReader(Uuid userId)
-  + void deleteEditor(Uuid userId)
-  + void deleteReader(Uuid userId)
+  + void addEditor(long userId)
+  + void addReader(long userId)
+  + void deleteEditor(long userId)
+  + void deleteReader(long userId)
   }
 
   class TagService {
   + name: String
   }
+
+  class SharedSerieService {
+     + Arraylist<SharedSerie> sharedSerieService
+     --
+    }
 }
 
 TimeSerie -right- "*" Event
 User -up-> TimeSerie : instanciate
 Event -- "*" Tag
+
+EventService -down- "*" Event
+TimeSerieService -down- "*" TimeSerie
+SharedSerie -- "1" TimeSerie
+SharedSerieService -- "*" SharedSerie
 @enduml
