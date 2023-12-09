@@ -1,6 +1,9 @@
 package com.tp1_techno_web.serietemporelle.model;
 
+import com.tp1_techno_web.serietemporelle.service.IdGenerator;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 //@Table
@@ -11,30 +14,26 @@ public class Event {
     private Date date;
 
     private double value;
-    private ArrayList<Tag> tag;
+    private ArrayList<Tag> tags;
     private String comment;
     private Date createdAt;
     private Date updatedAt;
 
-    public Event(long id, Date date, double value, ArrayList<Tag> tag, String comment) {
-        this.id = id;
+    public Event(Date date, double value) {
+        this.id = IdGenerator.nextId();
+        if (date == null) throw new IllegalArgumentException();
         this.date = date;
         this.value = value;
-        this.tag = tag;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
+
+    public Event(Date date, double value, String comment, Tag ... tags) {
+        this(date, value);
+        this.tags = new ArrayList<Tag>(Arrays.asList(tags));
         this.comment = comment;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
     }
 
-    public Event(long id, Date date, double value) {
-        this.id = id;
-        this.date = date;
-        this.value = value;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-    }
-
-    public Event(){}
 
     public long getId() {
         return id;
@@ -48,8 +47,8 @@ public class Event {
         return value;
     }
 
-    public ArrayList<Tag> getTag() {
-        return tag;
+    public ArrayList<Tag> getTags() {
+        return tags;
     }
 
     public String getComment() {
@@ -76,8 +75,8 @@ public class Event {
         this.value = value;
     }
 
-    public void setTag(ArrayList<Tag> tag) {
-        this.tag = tag;
+    public void setTags(ArrayList<Tag> tag) {
+        this.tags = tag;
     }
 
     public void setComment(String comment) {
