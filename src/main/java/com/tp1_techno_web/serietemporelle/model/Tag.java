@@ -1,15 +1,16 @@
 package com.tp1_techno_web.serietemporelle.model;
 
+import com.tp1_techno_web.serietemporelle.service.IdGenerator;
+
 public class Tag {
 
     private long id;
     private String label;
     private Event event;
 
-    public Tag(long id, String label, Event event) {
-        this.id = id;
+    public Tag(String label) {
+        this.id = IdGenerator.nextId();
         this.label = label;
-        this.event = event;
     }
 
     public long getId() {

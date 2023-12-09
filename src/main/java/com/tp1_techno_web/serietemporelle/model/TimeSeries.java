@@ -3,6 +3,7 @@ package com.tp1_techno_web.serietemporelle.model;
 import com.tp1_techno_web.serietemporelle.service.IdGenerator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,11 +19,13 @@ public class TimeSeries {
 
 
 
-    public TimeSeries(String title, String description, ArrayList<Event> events) {
+    public TimeSeries(String title, String description, Event...events) {
         this.id = IdGenerator.nextId();
         this.title = title;
         this.description = description;
-        this.events = new ArrayList<>();
+        if(events == null)
+            this.events = new ArrayList<>();
+        else this.addEventsToTimeSerie(events);
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }
@@ -80,4 +83,10 @@ public class TimeSeries {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    private void addEventsToTimeSerie(Event ... events){
+        this.events = new ArrayList<>();
+        this.events.addAll(new ArrayList<Event>(Arrays.asList(events)));
+    }
+
 }
