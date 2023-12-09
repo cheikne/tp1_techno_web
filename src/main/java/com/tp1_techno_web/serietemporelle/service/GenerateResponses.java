@@ -13,9 +13,9 @@ public class GenerateResponses {
     public static String generateHtmlForEvent(Event event){
         return "<div>" +
                 "<p>"+"Id of event "+event.getId()+"</p>"+
-                "<p>"+"Value of event "+event.getValeur()+"</p>"+
+                "<p>"+"Value of event "+event.getValue()+"</p>"+
                 "<p>"+"Date of event"+event.getDate()+"</p>"+
-                "<p>"+"Comment of event "+event.getCommentaire()+"</p>"+
+                "<p>"+"Comment of event "+event.getComment()+"</p>"+
                 "</div>";
     }
     public  static String generateHtmlForEvents(ArrayList<Event> events){

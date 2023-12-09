@@ -1,36 +1,39 @@
 package com.tp1_techno_web.serietemporelle.model;
 
-//import jakarta.persistence.Id;
-//import jakarta.persistence.Table;
-
+import java.util.ArrayList;
 import java.util.Date;
 
 //@Table
 public class Event {
 
-//    @Id
+    //    @Id
     private long id;
     private Date date;
 
-    private int valeur;
-    private int tag;
-    private String commentaire;
+    private double value;
+    private ArrayList<Tag> tag;
+    private String comment;
+    private Date createdAt;
+    private Date updatedAt;
 
-
-    public Event(long id, Date date, int valeur, int tag, String commentaire) {
+    public Event(long id, Date date, double value, ArrayList<Tag> tag, String comment) {
         this.id = id;
         this.date = date;
-        this.valeur = valeur;
+        this.value = value;
         this.tag = tag;
-        this.commentaire = commentaire;
+        this.comment = comment;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
-    public Event(long id, Date date, int valeur) {
+
+    public Event(long id, Date date, double value) {
         this.id = id;
         this.date = date;
-        this.valeur = valeur;
-        this.tag = tag;
-        this.commentaire = commentaire;
+        this.value = value;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
+
     public Event(){}
 
     public long getId() {
@@ -41,16 +44,24 @@ public class Event {
         return date;
     }
 
-    public int getValeur() {
-        return valeur;
+    public double getValue() {
+        return value;
     }
 
-    public int getTag() {
+    public ArrayList<Tag> getTag() {
         return tag;
     }
 
-    public String getCommentaire() {
-        return commentaire;
+    public String getComment() {
+        return comment;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     public void setId(long id) {
@@ -61,15 +72,23 @@ public class Event {
         this.date = date;
     }
 
-    public void setValeur(int valeur) {
-        this.valeur = valeur;
+    public void setValue(double value) {
+        this.value = value;
     }
 
-    public void setTag(int tag) {
+    public void setTag(ArrayList<Tag> tag) {
         this.tag = tag;
     }
 
-    public void setCommentaire(String commentaire) {
-        this.commentaire = commentaire;
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

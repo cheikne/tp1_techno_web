@@ -61,8 +61,6 @@ public class TimeSerieService {
         int i = 0;
         for (var timeS : this.timeSerieService){
             if(timeS.getId()==id) {
-                //this.timeSerieService.remove(timeS);
-//                this.timeSerieService.add(timeSeries);
                 this.timeSerieService.set(i,timeSeries);
                 break;
             }
