@@ -1,21 +1,23 @@
 package com.tp1_techno_web.serietemporelle.controller;
 
+import com.tp1_techno_web.serietemporelle.model.Event;
 import com.tp1_techno_web.serietemporelle.model.TimeSeries;
+import com.tp1_techno_web.serietemporelle.service.SharedSerieService;
 import com.tp1_techno_web.serietemporelle.service.TimeSerieService;
-import com.tp1_techno_web.serietemporelle.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 @RestController
 public class TimeSerieController {
 
     @Autowired
     private TimeSerieService timeSerieServices;
-
+    @Autowired
+    private SharedSerieService sharedSerieService;
     @GetMapping("api/time_series")
     public  Object getAllTimeSeries(HttpServletRequest headers){
         return timeSerieServices.getAllTimeSeries(headers);
@@ -32,15 +34,37 @@ public class TimeSerieController {
     }
     @PutMapping("api/time_series/{id}")
     @ResponseBody
-    public  Object update(@RequestBody TimeSeries timeSeries,HttpServletRequest headers, @PathVariable long id){
-        return timeSerieServices.updateToTimeSerie(timeSeries,headers,id);
+    public  Object updateTimeSerieTitle(@RequestBody ChangeTitle newTitle, HttpServletRequest headers, @PathVariable long id){
+        return timeSerieServices.updateTimeSerie(newTitle.title,newTitle.description,headers,id);
     }
 
-    @PostMapping("api/add_event_to_serie")
+    @PutMapping("api/time_series/{id}/events/{eventId}")
     @ResponseBody
-    public Object addEventToSerie(@RequestBody Map<String,String> add_event_timeSerie){
+    public  Object updateTimeSerieEvent(@RequestBody Event newEvent, HttpServletRequest headers, @PathVariable long id,
+                                        @PathVariable long eventId){
+        return timeSerieServices.updateTimeSerieEvent(newEvent, headers,id, eventId);
+    }
 
-        return this.timeSerieServices.addEventToSerie(add_event_timeSerie);
+    @PostMapping("api/add_event/{id}")
+    @ResponseBody
+    public Object addEventToSerie(@RequestBody ArrayList<Event> allEvents,@PathVariable long id,HttpServletRequest headers){
+
+        return this.timeSerieServices.addEventToSerie(allEvents,id,headers);
+    }
+
+    @DeleteMapping("api/time_series/{id}/events/{eventId}")
+    public Object deleteEventFromSerie(@PathVariable long id, @PathVariable long eventId,HttpServletRequest headers){
+        return this.timeSerieServices.deleteTimeSerieEvent(eventId,id,headers);
+    }
+    @DeleteMapping("api/time_series/{id}")
+    public Object deleteTimeSerieById(@PathVariable long id,HttpServletRequest headers){
+        this.sharedSerieService.removeSharedSerie(id);
+        return this.timeSerieServices.deleteTimeSerie(id,headers);
+    }
+    @Data
+    public static class ChangeTitle {
+        private String title;
+        private String description;
     }
 
 }

@@ -7,22 +7,33 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private   ArrayList<User> usersService = new ArrayList<>();
+    private ArrayList<User> usersService = new ArrayList<>();
     public Object createUser(User user) {
-        this.usersService.add(user);
-        Map<String,String> status = new HashMap<>();
-        status.put("message","CREATED");
+        Map<String, String> status = new HashMap<>();
+        if(!this.usersService.contains(user)) {
+            this.usersService.add(user);
+            status.put("message", "CREATED");
+            return status;
+        }
+        status.put("message", "User already exist.");
         return status;
     }
 
-    public  boolean isExistUser(String username){
+    public boolean isExistUser(String username){
+        if (username.isBlank()) return false;
         User user = new User(1,username);
-        if(usersService.contains(user))
-            return  true;
-        return false;
+        return usersService.contains(user);
+    }
+
+    public User getUserByUsername(String username){
+        Optional<User> user__ = this.usersService.stream()
+                .filter(user -> username.equalsIgnoreCase(user.getusername())).findFirst();
+        User myuser = user__.orElse(null);
+        return myuser;
     }
 }

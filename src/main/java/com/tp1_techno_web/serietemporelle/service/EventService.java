@@ -11,11 +11,11 @@ import java.util.*;
 public class EventService {
 
     private ArrayList<Event> events = new ArrayList<>(List.of(
-            new Event(1,new Date(),1,1,"Test commentaire 1"),
-            new Event(2,new Date(),2,1,"Test commentaire 2"),
-            new Event(3,new Date(),3,2,"Test commentaire 3"),
-            new Event(4,new Date(),4,1,"Test commentaire 4"),
-            new Event(5,new Date(),5,4,"Test commentaire 5")
+            new Event(new Date(),1,"Test commentaire 1"),
+            new Event(new Date(),2,"Test commentaire 2"),
+            new Event(new Date(),3,"Test commentaire 3"),
+            new Event(new Date(),4,"Test commentaire 4"),
+            new Event(new Date(),5,"Test commentaire 5")
     ));
 
     public Object getAllEvent(HttpServletRequest header){
@@ -31,14 +31,10 @@ public class EventService {
         return this.events;
     }
     public Event getEventById(long id){
-        var event_searched = new Event();
         for (Event event:events){
-            if (event.getId() == id){
-                event_searched = event;
-                break;
-            }
+            if (event.getId() == id) return event;
         }
-        return event_searched;
+        return null;
     }
 
     public List<Event> createEvents(Event event) {
@@ -86,7 +82,7 @@ public class EventService {
 
     public  Event findEventValue(int value){
         for (Event event:this.events){
-            if (event.getValeur() == value){
+            if (event.getValue() == value){
                 return  event;
             }
         }

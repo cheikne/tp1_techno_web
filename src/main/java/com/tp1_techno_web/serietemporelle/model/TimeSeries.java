@@ -3,6 +3,7 @@ package com.tp1_techno_web.serietemporelle.model;
 import com.tp1_techno_web.serietemporelle.service.IdGenerator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,9 @@ public class TimeSeries {
         this.id = IdGenerator.nextId();
         this.title = title;
         this.description = description;
-        this.events = new ArrayList<>();
+        if(events == null)
+            this.events = new ArrayList<>();
+        else this.addEventsToTimeSerie(events);
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }
@@ -69,7 +72,7 @@ public class TimeSeries {
         this.description = description;
     }
 
-    public void setEvents(Event event) {
+    public void addEvents(Event event) {
         this.events.add(event);
     }
 
@@ -80,4 +83,34 @@ public class TimeSeries {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public void setEventById(Event event) {
+        var i = 0;
+        for (var e: this.events) {
+            if (e.getId() == event.getId())
+            {
+                event.setCreatedAt(e.getCreatedAt());
+                event.setUpdatedAt(new Date());
+                this.events.set(i, event);
+            }
+            i++;
+        }
+    }
+
+    public void deleteEventById(long id) {
+        var i = 0;
+        for (var e: this.events) {
+            if (e.getId() == id)
+            {
+                this.events.remove(i);
+            }
+            i++;
+        }
+    }
+
+    private void addEventsToTimeSerie(ArrayList<Event> events){
+        this.events = new ArrayList<Event>();
+        events.forEach(obj->this.addEvents(obj));
+    }
+
 }
