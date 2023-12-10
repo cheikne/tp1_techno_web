@@ -4,6 +4,7 @@ import com.tp1_techno_web.serietemporelle.model.Event;
 import com.tp1_techno_web.serietemporelle.model.TimeSeries;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class TimeSerieService {
     private EventService event;
     @Autowired
     private UserService usersService;
+
     public Object getAllTimeSeries(HttpServletRequest headers) {
         String accept = headers.getHeader("Accept");
         String username = headers.getHeader("username");
@@ -54,15 +56,51 @@ public class TimeSerieService {
         return  this.getAllTimeSeriesForOwner(username);
     }
 
-    public Object updateToTimeSerie(TimeSeries timeSeries, HttpServletRequest headers,long id) {
+    public Object updateTimeSerie(String newTitle, String newDescription, HttpServletRequest headers, long id) {
         String username = headers.getHeader("username");
         if(!usersService.isExistUser(username))
             return messageError("User "+username+" does not exist."+username.toUpperCase()+"  can't edit");
         int i = 0;
         for (var timeS : this.timeSerieService){
-            if(timeS.getId()==id && timeS.getOwner().toUpperCase().equals(username.toUpperCase())) {
-                this.timeSerieService.set(i,timeSeries);
-                return timeSeries;
+            if(timeS.getId()==id && timeS.getOwner().equalsIgnoreCase(username)) {
+                if (newTitle != null) this.timeSerieService.get(i).setTitle(newTitle);
+                if (newDescription != null) this.timeSerieService.get(i).setDescription(newDescription);
+                return getOneTimeSeriesForOwner(username, id);
+            }
+            i = i+1;
+        }
+
+        return this.messageError("Your time serie does not exist!");
+    }
+
+    public Object updateTimeSerieEvent(Event newEvent, HttpServletRequest headers, long id, long eventId) {
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist."+username.toUpperCase()+"  can't edit");
+        int i = 0;
+        for (var timeS : this.timeSerieService){
+            if(timeS.getId()==id && timeS.getOwner().equalsIgnoreCase(username)) {
+                if (newEvent != null) {
+                    newEvent.setId(eventId);
+                    this.timeSerieService.get(i).setEventById(newEvent);
+                }
+                return getOneTimeSeriesForOwner(username, id);
+            }
+            i = i+1;
+        }
+
+        return this.messageError("Your time serie does not exist!");
+    }
+
+    public Object deleteTimeSerieEvent(long eventId, long id, HttpServletRequest headers) {
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist."+username.toUpperCase()+"  can't edit");
+        int i = 0;
+        for (var timeS : this.timeSerieService){
+            if(timeS.getId()==id && timeS.getOwner().equalsIgnoreCase(username)) {
+                this.timeSerieService.get(i).deleteEventById(eventId);
+                return getOneTimeSeriesForOwner(username, id);
             }
             i = i+1;
         }
@@ -123,6 +161,19 @@ public class TimeSerieService {
                 .findFirst();
         TimeSeries myserie = searchedSerie.orElse(null);
         return myserie;
+    }
+
+    public Object deleteTimeSerie(long id, HttpServletRequest headers) {
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist.");
+        for (var timeS:this.timeSerieService){
+            if(timeS.getOwner().equalsIgnoreCase((username)) && timeS.getId() == id){
+                this.timeSerieService.remove(timeS);
+                return getAllTimeSeriesForOwner(username);
+            }
+        }
+        return messageError("Your username or time serie does nit exist.");
     }
 }
 

@@ -84,6 +84,30 @@ public class TimeSeries {
         this.updatedAt = updatedAt;
     }
 
+    public void setEventById(Event event) {
+        var i = 0;
+        for (var e: this.events) {
+            if (e.getId() == event.getId())
+            {
+                event.setCreatedAt(e.getCreatedAt());
+                event.setUpdatedAt(new Date());
+                this.events.set(i, event);
+            }
+            i++;
+        }
+    }
+
+    public void deleteEventById(long id) {
+        var i = 0;
+        for (var e: this.events) {
+            if (e.getId() == id)
+            {
+                this.events.remove(i);
+            }
+            i++;
+        }
+    }
+
     private void addEventsToTimeSerie(ArrayList<Event> events){
         this.events = new ArrayList<Event>();
         events.forEach(obj->this.addEvents(obj));

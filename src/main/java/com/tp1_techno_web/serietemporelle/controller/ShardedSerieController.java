@@ -16,10 +16,24 @@ public class ShardedSerieController {
         return this.sharedSerie.createShareSerie(data.username,data.serie_id,data.isEditor,headers);
     }
 
+    @PostMapping("api/change_right")
+    public Object ShareTimeSerie(@RequestBody ChangeRight data, HttpServletRequest headers){
+        return this.sharedSerie.changeRight(data.id,data.isEditor,headers);
+    }
+
+    @GetMapping("api/my_shares")
+    public Object getMyShares(HttpServletRequest headers){
+        return this.sharedSerie.getMySharedSerie(headers);
+    }
     @Data
     public static class MyJsonData {
         private String username;
         private long serie_id;
-        private boolean isEditor;
+        private int isEditor;
+    }
+    @Data
+    public static class ChangeRight {
+        private long id;
+        private int isEditor;
     }
 }

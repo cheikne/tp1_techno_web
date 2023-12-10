@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SharedSerieService {
 
 
-    ArrayList<SharedSerie> sharedSerieService = new ArrayList<>();
+    private ArrayList<SharedSerie> sharedSerieService = new ArrayList<>();
 
     @Autowired
     private UserService userService;
@@ -24,7 +25,7 @@ public class SharedSerieService {
     @Autowired
     private TimeSerieService timeSerieService;
 
-    public Object createShareSerie(String username, long serieId, boolean isEditor, HttpServletRequest headers) {
+    public Object createShareSerie(String username, long serieId, int isEditor, HttpServletRequest headers) {
         String username_owner = headers.getHeader("username");
         if(!userService.isExistUser(username_owner))
             return messageError("You can't do this action because you're don't not exist.");
@@ -36,7 +37,7 @@ public class SharedSerieService {
         if(serie == null) return  messageError("Your Time Serrie does not exist.");
         if(!serie.getOwner().equalsIgnoreCase(username_owner))
             return messageError("You're not owner on this time serie.");
-        var newShared = new SharedSerie(serieId,isEditor ? Right.EDITOR:Right.READER,this.userService.getUserByUsername(username));
+        var newShared = new SharedSerie(serieId,isEditor ==1 ? Right.EDITOR:Right.READER,this.userService.getUserByUsername(username));
         this.sharedSerieService.add(newShared);
 
         return this.sharedSerieService;
@@ -44,6 +45,43 @@ public class SharedSerieService {
 
     }
 
+    public Object changeRight(long id, int isEditor, HttpServletRequest headers) {
+        String username_owner = headers.getHeader("username");
+        if(!userService.isExistUser(username_owner))
+            return messageError("You can't do this action because you're don't  exist.");
+        int i=0;
+        boolean isFind = false;
+        for(var each: this.sharedSerieService){
+            if(each.getId()==id) {
+                var serie = this.timeSerieService.findOneByIdSerie(each.getSharedSerieId());
+                if ( serie== null)
+                    return messageError("You can't do this action because Time does not exist.");
+                else if(!serie.getOwner().equalsIgnoreCase(username_owner))
+                    return messageError("You can't do this action because your username doesn't  exist.");
+
+                var right = isEditor==1 ? Right.EDITOR :  Right.READER;
+                each.setPermission(right);
+                System.out.println("sys  "+isEditor);
+                this.sharedSerieService.set(i,each);
+                isFind = true;
+                break;
+            }
+            i = i+1;
+
+        }
+        if(!isFind)
+            return messageError("Your Time share does not exist.");
+        return  this.messageSucces("The right is updated with sucess !");
+    }
+
+    public Object getMySharedSerie(HttpServletRequest headers){
+        String username = headers.getHeader("username");
+        if(!userService.isExistUser(username))
+            return messageError("You can't do this action because you're don't not exist.");
+        return this.sharedSerieService.stream()
+                .filter(obj -> username.equalsIgnoreCase(this.timeSerieService.findOneByIdSerie(obj.getSharedSerieId()).getOwner()))
+                .collect(Collectors.toList());
+    }
     public Map<String ,String> messageError(String message){
         Map<String,String> notExist = new HashMap<>();
         notExist.put("messageError",message);
@@ -63,5 +101,13 @@ public class SharedSerieService {
            }
        }
        return false;
+    }
+
+    public void removeSharedSerie(long id){
+        for(var eachSerie:this.sharedSerieService){
+            if(eachSerie.getSharedSerieId() == id){
+                this.sharedSerieService.remove(eachSerie);
+            }
+        }
     }
 }
