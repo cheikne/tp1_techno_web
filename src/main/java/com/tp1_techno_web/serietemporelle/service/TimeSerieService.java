@@ -1,8 +1,11 @@
 package com.tp1_techno_web.serietemporelle.service;
 
+import com.tp1_techno_web.serietemporelle.controller.TimeSerieController;
 import com.tp1_techno_web.serietemporelle.model.Event;
+import com.tp1_techno_web.serietemporelle.model.Tag;
 import com.tp1_techno_web.serietemporelle.model.TimeSeries;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class TimeSerieService {
     private ArrayList<TimeSeries> timeSerieService = new ArrayList<>();
+    private ArrayList<Tag> tags = new ArrayList<>();
     @Autowired
     private EventService event;
     @Autowired
@@ -163,17 +167,47 @@ public class TimeSerieService {
         return myserie;
     }
 
-    public Object deleteTimeSerie(long id, HttpServletRequest headers) {
+    public Object deleteTimeSerieById(long id, HttpServletRequest headers) {
         String username = headers.getHeader("username");
         if(!usersService.isExistUser(username))
             return messageError("User "+username+" does not exist.");
+        var isFind = false;
         for (var timeS:this.timeSerieService){
             if(timeS.getOwner().equalsIgnoreCase((username)) && timeS.getId() == id){
                 this.timeSerieService.remove(timeS);
-                return getAllTimeSeriesForOwner(username);
+                isFind = true;
+                break;
             }
         }
+        if(isFind)
+            return getAllTimeSeriesForOwner(username);
         return messageError("Your username or time serie does nit exist.");
+    }
+
+    public Object addTagToEvent(TimeSerieController.MyTags tag, @NotNull HttpServletRequest headers) {
+        String username = headers.getHeader("username");
+        if(!usersService.isExistUser(username))
+            return messageError("User "+username+" does not exist.");
+        int i = 0;
+        var isFind = false;
+        for (var timeS:this.timeSerieService){
+            if(timeS.getId() == tag.getSerieId()){
+                int j = 0;
+                for (var event:timeS.getEvents()){
+                    if (event.getId() == tag.getEventId()){
+                        var newTag = new Tag(tag.getName());
+                        this.tags.add(newTag);
+                        this.timeSerieService.get(i).getEvents().get(j).getTags().add(newTag);
+                        isFind = true;
+                        break;
+                    }
+                    j++;
+                }
+            }
+            i++;
+            if(isFind)  break;
+        }
+        return getOneTimeSeriesForOwner(username,tag.getSerieId());
     }
 }
 

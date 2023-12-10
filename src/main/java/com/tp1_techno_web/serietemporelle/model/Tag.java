@@ -5,35 +5,29 @@ import com.tp1_techno_web.serietemporelle.service.IdGenerator;
 public class Tag {
 
     private long id;
-    private String label;
-    private Event event;
+    private String name;
 
-    public Tag(String label) {
+
+    public Tag(String name) {
         this.id = IdGenerator.nextId();
-        this.label = label;
+        this.name = name;
     }
 
     public long getId() {
         return id;
     }
 
-    public String getLabel() {
-        return label;
+    public String getName() {
+        return name;
     }
 
-    public Event getEvent() {
-        return event;
-    }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 }

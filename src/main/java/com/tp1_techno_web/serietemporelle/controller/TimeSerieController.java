@@ -1,6 +1,7 @@
 package com.tp1_techno_web.serietemporelle.controller;
 
 import com.tp1_techno_web.serietemporelle.model.Event;
+import com.tp1_techno_web.serietemporelle.model.Tag;
 import com.tp1_techno_web.serietemporelle.model.TimeSeries;
 import com.tp1_techno_web.serietemporelle.service.SharedSerieService;
 import com.tp1_techno_web.serietemporelle.service.TimeSerieService;
@@ -59,12 +60,34 @@ public class TimeSerieController {
     @DeleteMapping("api/time_series/{id}")
     public Object deleteTimeSerieById(@PathVariable long id,HttpServletRequest headers){
         this.sharedSerieService.removeSharedSerie(id);
-        return this.timeSerieServices.deleteTimeSerie(id,headers);
+        return this.timeSerieServices.deleteTimeSerieById(id,headers);
+    }
+
+    @PostMapping("api/tags")
+    @ResponseBody
+    public Object addTagToEvent(@RequestBody MyTags tag,HttpServletRequest headers){
+        return this.timeSerieServices.addTagToEvent(tag,headers);
     }
     @Data
     public static class ChangeTitle {
         private String title;
         private String description;
+    }
+    @Data
+    public static class MyTags {
+        private String name;
+        private long event_id;
+        private long serie_id;
+
+        public long getSerieId() {
+            return this.serie_id;
+        }
+        public long getEventId() {
+            return this.event_id;
+        }
+        public String getName() {
+            return this.name;
+        }
     }
 
 }
