@@ -10,13 +10,7 @@ import java.util.*;
 @Service
 public class EventService {
 
-    private ArrayList<Event> events = new ArrayList<>(List.of(
-            new Event(new Date(),1,"Test commentaire 1"),
-            new Event(new Date(),2,"Test commentaire 2"),
-            new Event(new Date(),3,"Test commentaire 3"),
-            new Event(new Date(),4,"Test commentaire 4"),
-            new Event(new Date(),5,"Test commentaire 5")
-    ));
+    private ArrayList<Event> events = new ArrayList<>();
 
     public Object getAllEvent(HttpServletRequest header){
         String headerAccept = header.getHeader("Accept");

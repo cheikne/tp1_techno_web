@@ -61,7 +61,6 @@ public class SharedSerieService {
 
                 var right = isEditor==1 ? Right.EDITOR :  Right.READER;
                 each.setPermission(right);
-                System.out.println("sys  "+isEditor);
                 this.sharedSerieService.set(i,each);
                 isFind = true;
                 break;
@@ -77,7 +76,7 @@ public class SharedSerieService {
     public Object getMySharedSerie(HttpServletRequest headers){
         String username = headers.getHeader("username");
         if(!userService.isExistUser(username))
-            return messageError("You can't do this action because you're don't not exist.");
+            return messageError("You can't do this action because your username does't exist.");
         return this.sharedSerieService.stream()
                 .filter(obj -> username.equalsIgnoreCase(this.timeSerieService.findOneByIdSerie(obj.getSharedSerieId()).getOwner()))
                 .collect(Collectors.toList());
@@ -104,10 +103,18 @@ public class SharedSerieService {
     }
 
     public void removeSharedSerie(long id){
-        for(var eachSerie:this.sharedSerieService){
-            if(eachSerie.getSharedSerieId() == id){
-                this.sharedSerieService.remove(eachSerie);
+        int i = 0;
+        var temp = this.sharedSerieService;
+        if(temp.size() == 1)
+            if (this.sharedSerieService.get(0).getSharedSerieId() == id) {
+                this.sharedSerieService.remove(0);
+                return;
             }
+        for(var eachSerie:temp){
+            if(eachSerie.getSharedSerieId() == id){
+                this.sharedSerieService.remove(i);
+            }
+            i = i+1;
         }
     }
 }
