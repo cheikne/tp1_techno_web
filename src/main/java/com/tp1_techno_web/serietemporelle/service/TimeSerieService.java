@@ -28,14 +28,11 @@ public class TimeSerieService {
         String username = headers.getHeader("username");
         if(!usersService.isExistUser(username))
             return messageError("User "+username+" does not exist.");
-        System.out.println("Header username **************************** "+accept);
         if(accept.contains(MediaType.APPLICATION_JSON_VALUE)) {
-            System.out.println("Header json detected ****************************");
             return this.getAllTimeSeriesForOwner(username);
         }
         if(accept.contains(MediaType.TEXT_HTML_VALUE)) {
-            System.out.println("Header Text html detected ****************************");
-            return GenerateResponses.generateHtmlForTimeSeries(this.timeSerieService);
+            return GenerateResponses.generateHtmlForTimeSeries((ArrayList<TimeSeries>) getAllTimeSeriesForOwner(username));
         }
         return this.getAllTimeSeriesForOwner(username);
     }
@@ -43,8 +40,17 @@ public class TimeSerieService {
 
     public Object getTimeSeriesById(HttpServletRequest headers, long id) {
         String username = headers.getHeader("username");
+        String accept = headers.getHeader("Accept");
         if(!usersService.isExistUser(username))
             return messageError("User "+username+" does not exist.");
+        if(accept.contains(MediaType.TEXT_HTML_VALUE)) {
+            var serie = getOneTimeSeriesForOwner(username,id);
+            if(serie == null)
+                return messageError("Your Time Serie does not exist");
+            ArrayList<TimeSeries> tempo = new ArrayList<>();
+            tempo.add(serie);
+            return GenerateResponses.generateHtmlForTimeSeries(tempo);
+        }
         return this.getOneTimeSeriesForOwner(username,id);
     }
 
@@ -54,7 +60,6 @@ public class TimeSerieService {
         if(!usersService.isExistUser(username))
             return messageError("User "+username+" does not exist. You have to create first "+username);
         timeSeries.setOwner(username);
-        System.out.println("****************************************");
         this.timeSerieService.add(timeSeries);
 
         return  this.getAllTimeSeriesForOwner(username);
@@ -153,10 +158,12 @@ public class TimeSerieService {
                 .filter(obj -> username.equalsIgnoreCase(obj.getOwner()))
                 .collect(Collectors.toList());
     }
-    private Object getOneTimeSeriesForOwner(String username,long id){
-        return this.timeSerieService.stream()
+    private TimeSeries getOneTimeSeriesForOwner(String username,long id){
+       Optional<TimeSeries> serie =   this.timeSerieService.stream()
                 .filter(obj -> username.equalsIgnoreCase(obj.getOwner()) && obj.getId()==id)
                 .findFirst();
+       TimeSeries newSerie = serie.orElse(null);
+        return newSerie;
     }
 
     public TimeSeries findOneByIdSerie(long id){
