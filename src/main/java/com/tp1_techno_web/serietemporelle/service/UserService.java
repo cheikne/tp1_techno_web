@@ -13,8 +13,9 @@ import java.util.Optional;
 public class UserService {
 
     private ArrayList<User> usersService = new ArrayList<>();
-    public Object createUser(User user) {
+    public Object createUser(String username) {
         Map<String, String> status = new HashMap<>();
+        var user = new User(username);
         if(!this.usersService.contains(user)) {
             this.usersService.add(user);
             status.put("message", "CREATED");
@@ -26,11 +27,11 @@ public class UserService {
 
     public boolean isExistUser(String username){
         if (username.isBlank()) return false;
-        User user = new User(1,username);
+        User user = new User(username);
         return usersService.contains(user);
     }
 
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         Optional<User> user__ = this.usersService.stream()
                 .filter(user -> username.equalsIgnoreCase(user.getusername())).findFirst();
         User myuser = user__.orElse(null);

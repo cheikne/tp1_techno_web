@@ -39,7 +39,6 @@ public class Event {
         this.value=0;
     }
 
-
     public long getId() {
         return id;
     }
